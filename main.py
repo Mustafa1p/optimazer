@@ -17,12 +17,12 @@ from PyQt6.QtCore import Qt, QTimer
 class GameOptimizer(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("محسن أداء الألعاب")
+        self.setWindowTitle("Optimazer")
         self.setGeometry(100, 100, 600, 400)
 
         self.layout = QVBoxLayout()
 
-        # اختيار اللعبة
+
         self.select_button = QPushButton("تحديد اللعبة")
         self.select_button.clicked.connect(self.select_game)
         self.layout.addWidget(self.select_button)
@@ -30,18 +30,18 @@ class GameOptimizer(QWidget):
         self.game_label = QLabel("لم يتم تحديد لعبة.")
         self.layout.addWidget(self.game_label)
 
-        # تشغيل اللعبة
+
         self.run_button = QPushButton("تشغيل اللعبة")
         self.run_button.clicked.connect(self.run_game)
         self.run_button.setEnabled(False)
         self.layout.addWidget(self.run_button)
 
-        # قائمة العمليات
+
         self.process_list = QListWidget()
         self.layout.addWidget(QLabel("العمليات الحالية:"))
         self.layout.addWidget(self.process_list)
 
-        # أزرار إدارة العمليات
+
         self.process_buttons_layout = QHBoxLayout()
         self.kill_button = QPushButton("إنهاء العملية المحددة")
         self.kill_button.clicked.connect(self.kill_process)
@@ -49,11 +49,11 @@ class GameOptimizer(QWidget):
 
         self.layout.addLayout(self.process_buttons_layout)
 
-        # مؤشرات الموارد
+
         self.resource_label = QLabel("حالة الموارد:")
         self.layout.addWidget(self.resource_label)
 
-        # تحديث قائمة العمليات والموارد كل ثانية
+
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_process_list)
         self.timer.timeout.connect(self.update_resources)
@@ -66,7 +66,7 @@ class GameOptimizer(QWidget):
 
     def select_game(self):
         try:
-            # لا نحتاج إلى استخدام Options هنا
+
             file_name, _ = QFileDialog.getOpenFileName(
                 self,
                 "اختر ملف اللعبة التنفيذي",
@@ -85,10 +85,10 @@ class GameOptimizer(QWidget):
     def run_game(self):
         if self.selected_game:
             try:
-                # تشغيل اللعبة
+
                 self.game_process = subprocess.Popen([self.selected_game])
 
-                # تعيين أولوية عالية
+
                 pid = self.game_process.pid
                 proc = psutil.Process(pid)
                 if sys.platform.startswith('win'):
@@ -133,7 +133,7 @@ class GameOptimizer(QWidget):
         self.resource_label.setText(f"CPU: {cpu}% | RAM: {ram}% | Network Usage: {net} bytes")
 
     def closeEvent(self, event):
-        # عند إغلاق البرنامج، تأكد من إنهاء اللعبة إذا كانت لا تزال تعمل
+
         if self.game_process and self.game_process.poll() is None:
             try:
                 self.game_process.terminate()
